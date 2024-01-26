@@ -23,6 +23,16 @@ export default function Header() {
                     <li className="nav-item">
                         <NavLink activeClassName='activeNavItem' className="nav-link" to="/login">Login</NavLink>
                     </li>
+                    <li className="nav-item">
+                        <NavLink activeClassName='activeNavItem' className="nav-link" to="/profile">Profile</NavLink>
+                    </li>
+                    <li className="nav-item dropdown">
+                        <a className="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bai Tap</a>
+                        <div className="dropdown-menu" aria-labelledby="dropdownId">
+                            <NavLink className="dropdown-item" to="/todolistrfc">TODOLIST RFC</NavLink>
+                            <NavLink className="dropdown-item" to="/todolistrcc">TODOLIST RCC</NavLink>
+                        </div>
+                    </li>
                 </ul>
                 <form className="form-inline my-2 my-lg-0">
                     <input className="form-control mr-sm-2" type="text" placeholder="Search" />
