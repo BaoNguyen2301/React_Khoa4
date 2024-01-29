@@ -11,11 +11,14 @@ import Profile from './pages/Profile/Profile';
 import ToDoListRFC from './pages/ToDoList/ToDoListRFC';
 import ToDoList from './pages/ToDoList/ToDoList';
 import ToDoListRedux from './pages/ToDoList/ToDoListRedux';
+import ToDoListSaga from './pages/ToDoList/ToDoListSaga';
+import LoadingComponent from './components/GlobalSetting/LoadingComponent/LoadingComponent';
 
 function App() {
   return (
     <BrowserRouter>
       <Header/>
+      <LoadingComponent/>
       <Switch>
         <Route exact path='/home' component={Home} />
         <Route exact path='/contact' component={Contact} />
@@ -27,6 +30,7 @@ function App() {
         <Route exact path='/todolistrfc' component={ToDoListRFC}/>
         <Route exact path='/todolistrcc' component={ToDoList}/>
         <Route exact path='/todolistrfcredux' component={ToDoListRedux}/>
+        <Route exact path='/todolistrfcsaga' component={ToDoListSaga}/>
         <Route path="*" component={PageNotFound}/>
       </Switch>
     </BrowserRouter>
