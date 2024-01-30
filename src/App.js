@@ -13,11 +13,14 @@ import ToDoList from './pages/ToDoList/ToDoList';
 import ToDoListRedux from './pages/ToDoList/ToDoListRedux';
 import ToDoListSaga from './pages/ToDoList/ToDoListSaga';
 import LoadingComponent from './components/GlobalSetting/LoadingComponent/LoadingComponent';
+import DEmoHocModal from './pages/DemoHocModal/DEmoHocModal';
+import Modal from './HOC/Modal/Modal';
 
 function App() {
   return (
     <BrowserRouter>
       <Header/>
+      <Modal/>
       <LoadingComponent/>
       <Switch>
         <Route exact path='/home' component={Home} />
@@ -31,6 +34,7 @@ function App() {
         <Route exact path='/todolistrcc' component={ToDoList}/>
         <Route exact path='/todolistrfcredux' component={ToDoListRedux}/>
         <Route exact path='/todolistrfcsaga' component={ToDoListSaga}/>
+        <Route exact path='/demohocmodal' component={DEmoHocModal}/>
         <Route path="*" component={PageNotFound}/>
       </Switch>
     </BrowserRouter>
