@@ -15,15 +15,15 @@ import ToDoListSaga from './pages/ToDoList/ToDoListSaga';
 import LoadingComponent from './components/GlobalSetting/LoadingComponent/LoadingComponent';
 import DEmoHocModal from './pages/DemoHocModal/DEmoHocModal';
 import Modal from './HOC/Modal/Modal';
+import { HomeTemmlate } from './templates/HomeTemplate/HomeTemmlate';
 
 function App() {
   return (
     <BrowserRouter>
-      <Header/>
       <Modal/>
       <LoadingComponent/>
       <Switch>
-        <Route exact path='/home' component={Home} />
+        <HomeTemmlate exact path='/home' Component={Home} />
         <Route exact path='/contact' component={Contact} />
         <Route exact path='/about' component={About} />
         <Route exact path='/' component={Home} />
