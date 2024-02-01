@@ -16,6 +16,8 @@ import LoadingComponent from './components/GlobalSetting/LoadingComponent/Loadin
 import DEmoHocModal from './pages/DemoHocModal/DEmoHocModal';
 import Modal from './HOC/Modal/Modal';
 import { HomeTemmlate } from './templates/HomeTemplate/HomeTemmlate';
+import { UserLoginTemplate } from './templates/HomeTemplate/UserLoginTemplate';
+import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs/LoginCyberBugs';
 
 function App() {
   return (
@@ -24,18 +26,18 @@ function App() {
       <LoadingComponent/>
       <Switch>
         <HomeTemmlate exact path='/home' Component={Home} />
-        <Route exact path='/contact' component={Contact} />
-        <Route exact path='/about' component={About} />
-        <Route exact path='/' component={Home} />
-        <Route exact path='/login' component={Login}/>
-        <Route exact path='/detail/:id' component={Detail}/>
-        <Route exact path='/profile' component={Profile}/>
-        <Route exact path='/todolistrfc' component={ToDoListRFC}/>
-        <Route exact path='/todolistrcc' component={ToDoList}/>
-        <Route exact path='/todolistrfcredux' component={ToDoListRedux}/>
-        <Route exact path='/todolistrfcsaga' component={ToDoListSaga}/>
-        <Route exact path='/demohocmodal' component={DEmoHocModal}/>
-        <Route path="*" component={PageNotFound}/>
+        <HomeTemmlate exact path='/contact' Component={Contact} />
+        <HomeTemmlate exact path='/about' Component={About} />
+        <HomeTemmlate exact path='/' Component={Home} />
+        <UserLoginTemplate exact path='/login' Component={LoginCyberBugs}/>
+        <HomeTemmlate exact path='/detail/:id' Component={Detail}/>
+        <HomeTemmlate exact path='/profile' Component={Profile}/>
+        <HomeTemmlate exact path='/todolistrfc' Component={ToDoListRFC}/>
+        <HomeTemmlate exact path='/todolistrcc' Component={ToDoList}/>
+        <HomeTemmlate exact path='/todolistrfcredux' Component={ToDoListRedux}/>
+        <HomeTemmlate exact path='/todolistrfcsaga' Component={ToDoListSaga}/>
+        <HomeTemmlate exact path='/demohocmodal' Component={DEmoHocModal}/>
+        <HomeTemmlate path="*" Component={PageNotFound}/>
       </Switch>
     </BrowserRouter>
   );
