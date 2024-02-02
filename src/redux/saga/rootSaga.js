@@ -1,6 +1,6 @@
 import {all} from 'redux-saga/effects';
 import * as ToDoListSagaAction from './ToDoListSagaAction'
-
+import * as UserCyberbugsSaga from './Cyberbugs/UserCyberbugsSaga'
 export function * rootSaga (){
     // yield fork(getTaskApiSaga)
     yield all([
@@ -8,6 +8,9 @@ export function * rootSaga (){
         ToDoListSagaAction.followActionAddTaskApi(),
         ToDoListSagaAction.followActionDeleteTaskApi(),
         ToDoListSagaAction.followActionDoneTaskApi(),
-        ToDoListSagaAction.followActionRejectTaskApi()
+        ToDoListSagaAction.followActionRejectTaskApi(),
+
+        UserCyberbugsSaga.followSignin()
+
     ])
 }

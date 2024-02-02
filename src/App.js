@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom/cjs/react-router-dom.min';
+import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import './App.css';
 import Home from './pages/Home/Home';
 import Contact from './pages/Contact/Contact';
@@ -18,28 +18,47 @@ import Modal from './HOC/Modal/Modal';
 import { HomeTemmlate } from './templates/HomeTemplate/HomeTemmlate';
 import { UserLoginTemplate } from './templates/HomeTemplate/UserLoginTemplate';
 import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs/LoginCyberBugs';
+import { useState, useEffect } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { ADD_HISTORY } from './util/constants/settingSystem';
 
 function App() {
+
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: ADD_HISTORY,
+      history: history
+    })
+    return () => {
+
+    }
+  }, [])
+
+
   return (
-    <BrowserRouter>
-      <Modal/>
-      <LoadingComponent/>
+    <>
+      <Modal />
+      <LoadingComponent />
       <Switch>
         <HomeTemmlate exact path='/home' Component={Home} />
         <HomeTemmlate exact path='/contact' Component={Contact} />
         <HomeTemmlate exact path='/about' Component={About} />
         <HomeTemmlate exact path='/' Component={Home} />
-        <UserLoginTemplate exact path='/login' Component={LoginCyberBugs}/>
-        <HomeTemmlate exact path='/detail/:id' Component={Detail}/>
-        <HomeTemmlate exact path='/profile' Component={Profile}/>
-        <HomeTemmlate exact path='/todolistrfc' Component={ToDoListRFC}/>
-        <HomeTemmlate exact path='/todolistrcc' Component={ToDoList}/>
-        <HomeTemmlate exact path='/todolistrfcredux' Component={ToDoListRedux}/>
-        <HomeTemmlate exact path='/todolistrfcsaga' Component={ToDoListSaga}/>
-        <HomeTemmlate exact path='/demohocmodal' Component={DEmoHocModal}/>
-        <HomeTemmlate path="*" Component={PageNotFound}/>
+        <UserLoginTemplate exact path='/login' Component={LoginCyberBugs} />
+        <HomeTemmlate exact path='/detail/:id' Component={Detail} />
+        <HomeTemmlate exact path='/profile' Component={Profile} />
+        <HomeTemmlate exact path='/todolistrfc' Component={ToDoListRFC} />
+        <HomeTemmlate exact path='/todolistrcc' Component={ToDoList} />
+        <HomeTemmlate exact path='/todolistrfcredux' Component={ToDoListRedux} />
+        <HomeTemmlate exact path='/todolistrfcsaga' Component={ToDoListSaga} />
+        <HomeTemmlate exact path='/demohocmodal' Component={DEmoHocModal} />
+        <HomeTemmlate path="*" Component={PageNotFound} />
       </Switch>
-    </BrowserRouter>
+    </>
   );
 }
 
