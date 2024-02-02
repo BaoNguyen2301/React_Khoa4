@@ -22,6 +22,9 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { ADD_HISTORY } from './util/constants/settingSystem';
+import { CyberBugsTemplate } from './templates/HomeTemplate/CyberBugsTemplate';
+import indexCyberBugs from './redux/saga/Cyberbugs/indexCyberBugs';
+import CreateProject from './pages/CyberBugs/CreateProject/CreateProject';
 
 function App() {
 
@@ -56,6 +59,8 @@ function App() {
         <HomeTemmlate exact path='/todolistrfcredux' Component={ToDoListRedux} />
         <HomeTemmlate exact path='/todolistrfcsaga' Component={ToDoListSaga} />
         <HomeTemmlate exact path='/demohocmodal' Component={DEmoHocModal} />
+        <CyberBugsTemplate exact path='/cyberbugs' Component={indexCyberBugs}/>
+        <CyberBugsTemplate exact path='/createprojectsetting' Component={CreateProject}/>
         <HomeTemmlate path="*" Component={PageNotFound} />
       </Switch>
     </>
