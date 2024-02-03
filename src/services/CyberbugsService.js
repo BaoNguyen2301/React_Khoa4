@@ -8,5 +8,11 @@ export const cyberbugsService = {
             method: 'POST',
             data: userLogin
         })
+    },
+    getAllProjectCategory:()=>{
+        return axios({
+            url: `${DOMAIN_CYBERBUG}/ProjectCategory`,
+            method: 'GET'
+        })
     }
 }
