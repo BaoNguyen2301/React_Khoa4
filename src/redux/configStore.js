@@ -8,6 +8,7 @@ import { rootSaga } from "./saga/rootSaga";
 import HistoryReducer from "./reducers/HistoryReducer";
 import UserCyberbugsReducer from "./reducers/UserCyberbugsReducer"
 import ProjectCategoryReducer from './reducers/ProjectCategoryReducer'
+import ProjectCyberBugsReducer from './reducers/ProjectCyberBugsReducer'
 const middleWareSaga = createMiddleWareSaga();
 
 const rootReducer = combineReducers({
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     ModalReducer,
     HistoryReducer,
     UserCyberbugsReducer,
-    ProjectCategoryReducer
+    ProjectCategoryReducer,
+    ProjectCyberBugsReducer
 })
 
 const store = createStore(

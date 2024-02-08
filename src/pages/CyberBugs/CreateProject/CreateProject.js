@@ -11,11 +11,10 @@ import { getAllProjectCategoryAction } from '../../../redux/actions/CyberBugs/Cy
 function CreateProject(props) {
 
   const arrProjectCategory = useSelector(state => state.ProjectCategoryReducer.arrProjectCategory);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllProjectCategoryAction)
+    dispatch(getAllProjectCategoryAction())
     return () => {
       
     }
@@ -39,7 +38,7 @@ function CreateProject(props) {
   return (
     <div className='container mt-5'>
       <h3>Create Project</h3>
-      <form className='container' onSubmit={handleSubmit}>
+      <form className='container' onSubmit={handleSubmit} onChange={handleChange}>
         <div className='form-group'>
           <p>Name</p>
           <input className='form-control' name='projectName' />
@@ -48,7 +47,9 @@ function CreateProject(props) {
           <p>Description</p>
 
           <Editor
-            onInit={(evt, editor) => editorRef.current = editor}
+            onInit={(evt, editor) => {
+              return editorRef.current = editor
+            }}
             apiKey='sjskzwmsvvf48f63km1l2k34tvyvyj5i317qpwj5k53o0uip'
             initialValue="<p>This is the initial content of the editor.</p>"
             name='description'
@@ -69,31 +70,44 @@ function CreateProject(props) {
           />
         </div>
         <div className='form-group'>
-          <select className='form-control'>
+          <select className='form-control' onChange={handleChange}>
             {arrProjectCategory.map((item, index)=>{
               return <option value={item.id} key={index} >{item.projectCategoryName}</option>
             })}
           </select>
         </div>
-        <button className='btn btn-outline-primary' type='submit'>Create Project</button>
+        <button className='btn btn-outline-primary' type='submit' onClick={log}>Create Project</button>
       </form>
     </div>
   )
 }
 const createProjectForm = withFormik({
-  mapPropsToValues: () => ({
-
-  }),
+  enableReinitialize: true,
+  mapPropsToValues: (props) => {
+    return{
+    projectName: '',
+    description: '',
+    categoryId: props.arrProjectCategory[0]?.id
+  }},
 
   validationSchema: Yup.object({
 
   }),
 
-  handleSubmit: ({ email, password }, { props, setSubmitting }) => {
-
+  handleSubmit: (values, { props, setSubmitting }) => {
+    props.dispatch({
+      type: 'CREATE_PROJECT_SAGA',
+      newProject: values
+    })
   },
 
   displayName: 'Create Project',
 })(CreateProject);
 
-export default connect()(createProjectForm);
+const mapStateToProps = (state) => {
+  return {
+    arrProjectCategory: state.ProjectCategoryReducer.arrProjectCategory
+  }
+}
+
+export default connect(mapStateToProps)(createProjectForm);

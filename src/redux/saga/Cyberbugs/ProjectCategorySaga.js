@@ -7,7 +7,6 @@ import { GET_ALL_PROJECT_CATEGORY, GET_ALL_PROJECT_CATEGORY_SAGA } from '../../c
 function * getAllProjectCategorySaga(action){
     try{
         const {data, status} = yield call(()=>{ return cyberbugsService.getAllProjectCategory()})
-        console.log(data)
         if(status === STATUS_CODE.SUCCESS){
             yield put({
                 type: GET_ALL_PROJECT_CATEGORY,

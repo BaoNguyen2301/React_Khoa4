@@ -10,7 +10,6 @@ export default (state = historyState, action) => {
 
   case ADD_HISTORY: {
     state.history = action.history;
-    console.log(state)
     return{...state}
   }
 

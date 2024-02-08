@@ -25,6 +25,7 @@ import { ADD_HISTORY } from './util/constants/settingSystem';
 import { CyberBugsTemplate } from './templates/HomeTemplate/CyberBugsTemplate';
 import indexCyberBugs from './redux/saga/Cyberbugs/indexCyberBugs';
 import CreateProject from './pages/CyberBugs/CreateProject/CreateProject';
+import ProjectManagement from './pages/CyberBugs/ProjectManagement/ProjectManagement'
 
 function App() {
 
@@ -61,6 +62,7 @@ function App() {
         <HomeTemmlate exact path='/demohocmodal' Component={DEmoHocModal} />
         <CyberBugsTemplate exact path='/cyberbugs' Component={indexCyberBugs}/>
         <CyberBugsTemplate exact path='/createprojectsetting' Component={CreateProject}/>
+        <CyberBugsTemplate exact path='/projectmanagement' Component={ProjectManagement}/>
         <HomeTemmlate path="*" Component={PageNotFound} />
       </Switch>
     </>
