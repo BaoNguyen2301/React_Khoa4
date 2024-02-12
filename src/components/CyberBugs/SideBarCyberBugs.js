@@ -1,27 +1,58 @@
-import React from 'react'
+import React, { useState } from 'react'
+import {
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    UploadOutlined,
+    UserOutlined,
+    VideoCameraOutlined,
+    PlusOutlined,
+    SearchOutlined
+} from '@ant-design/icons';
+import { Layout, Menu, Button, theme } from 'antd';
+const { Header, Sider, Content } = Layout;
 
 export default function SideBarCyberBugs() {
+    const [collapsed, setCollapsed] = useState(false);
+    const {
+        token: { colorBgContainer, borderRadiusLG },
+    } = theme.useToken();
     return (
-        <div className="sideBar">
-            <div className="sideBar-top">
-                <div className="sideBar-icon">
-                    <i className="fab fa-jira" />
+        <Layout>
+
+            <Sider trigger={null} collapsible collapsed={collapsed} style={{ height: '100%' }}>
+                <div className='text-right'>
+                    <Button
+                        type="text"
+                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                        onClick={() => setCollapsed(!collapsed)}
+                        style={{
+                            fontSize: '16px',
+                            width: 64,
+                            height: 64,
+                            color: 'white'
+                        }}
+
+                    />
                 </div>
-                <div className="sideBar-icon" data-toggle="modal" data-target="#searchModal" style={{ cursor: 'pointer' }}>
-                    <i className="fa fa-search" />
-                    <span className="title">SEARCH ISSUES</span>
-                </div>
-                <div className="sideBar-icon">
-                    <i className="fa fa-plus" />
-                    <span className="title">CREATE ISSUES</span>
-                </div>
-            </div>
-            <div className="sideBar-bottom">
-                <div className="sideBar-icon">
-                    <i className="fa fa-question-circle" />
-                    <span className="title">ABOUT</span>
-                </div>
-            </div>
-        </div>
+                <div className="demo-logo-vertical" />
+                <Menu
+                    theme="dark"
+                    mode="inline"
+                    defaultSelectedKeys={['1']}
+                    items={[
+                        {
+                            key: '1',
+                            icon: <PlusOutlined />,
+                            label: 'Add',
+                        },
+                        {
+                            key: '2',
+                            icon: <SearchOutlined />,
+                            label: 'Search',
+                        },
+                    ]}
+                />
+            </Sider>
+        </Layout>
     )
 }

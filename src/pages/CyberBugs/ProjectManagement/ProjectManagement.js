@@ -5,6 +5,7 @@ import Highlighter from 'react-highlight-words';
 import parse from 'html-react-parser';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
+import FormEditProjectCyberBugs from '../../../components/Form/FormEditProject/FormEditProjectCyberBugs';
 
 
 export default function ProjectManagement() {
@@ -185,10 +186,16 @@ export default function ProjectManagement() {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary"><EditOutlined /></Button>
+          <Button type="primary" onClick={()=>{
+            dispatch({
+              type: 'OPEN_FORM_EDIT_PROJECT',
+              Component: <FormEditProjectCyberBugs/>
+            })
+          }}><EditOutlined /></Button>
           <Button type="primary" danger><DeleteOutlined /></Button>
         </Space>
       ),
+      
     },
   ];
   return (

@@ -25,7 +25,8 @@ import { ADD_HISTORY } from './util/constants/settingSystem';
 import { CyberBugsTemplate } from './templates/HomeTemplate/CyberBugsTemplate';
 import indexCyberBugs from './redux/saga/Cyberbugs/indexCyberBugs';
 import CreateProject from './pages/CyberBugs/CreateProject/CreateProject';
-import ProjectManagement from './pages/CyberBugs/ProjectManagement/ProjectManagement'
+import ProjectManagement from './pages/CyberBugs/ProjectManagement/ProjectManagement';
+import ModalCyberBugs from './HOC/CyberBugsHOC/ModalCyberBugs'
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
   return (
     <>
       <Modal />
+      <ModalCyberBugs/>
       <LoadingComponent />
       <Switch>
         <HomeTemmlate exact path='/home' Component={Home} />
