@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 const initialState = {
     visible: false,
     ComponentContentDrawer: <p>default content</p>,

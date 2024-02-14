@@ -1,50 +1,77 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
-import { UseDispatch,useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector, connect } from 'react-redux';
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
+import { getAllProjectCategoryAction } from '../../../redux/actions/CyberBugs/CyberbusAction';
 
-export default function FormEditProjectCyberBugs(props) {
+function FormEditProjectCyberBugs(props) {
+
+    
+    const arrProjectCategory = useSelector(state => state.ProjectCategoryReducer.arrProjectCategory);
+
+    const {
+        values,
+        touched,
+        errors,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        setFieldValue
+    } = props;
+
+    const handleEditorChange= (value, editor)=> {
+        setFieldValue('description', value);
+      }
+
     const editorRef = useRef(null);
     const log = () => {
         if (editorRef.current) {
-            console.log(editorRef.current.getContent());
+            console(editorRef.current.getContent());
         }
     };
 
-    const submitForm = (e) => {
-        e.preventDefault();
-        alert('submit edit')
-    }
+    // const submitForm = (e) => {
+    //     e.preventDefault();
+    //     alert('submit edit')
+    // }
     const dispatch = useDispatch();
 
     useEffect(() => {
-      dispatch({type:'SET_SUBMIT_EDIT_PROJECT', submitFuncion: submitForm})
-      return () => {
-        
-      }
-    }, [])
-    
 
-    
+        dispatch(getAllProjectCategoryAction())
+
+        dispatch({ type: 'SET_SUBMIT_EDIT_PROJECT', submitFuncion: handleSubmit })
+        return () => {
+
+        }
+    }, [])
+
+
 
     return (
-        <form className='container-fluid' onSubmit={submitForm}>
+        <form className='container-fluid' onSubmit={handleSubmit}>
             <div className='row'>
                 <div className='col-4'>
                     <div className='form-group'>
                         <p className='font-weight-bold'>project ID</p>
-                        <input disabled className='form-control' name='id'></input>
+                        <input value={values.id} disabled className='form-control' name='id'></input>
                     </div>
                 </div>
                 <div className='col-4'>
                     <div className='form-group'>
                         <p className='font-weight-bold'>projectName</p>
-                        <input className='form-control' name='projectName'></input>
+                        <input value={values.projectName} className='form-control' name='projectName' onChange={handleChange}></input>
                     </div>
                 </div>
                 <div className='col-4'>
                     <div className='form-group'>
-                        <p className='font-weight-bold'>creator</p>
-                        <input className='form-control' name='creator'></input>
+                        <p className='font-weight-bold'>Project Category</p>
+                        <select className='form-control' onChange={handleChange}>
+                            {arrProjectCategory.map((item, index) => {
+                                return <option value={item.id} key={index} >{item.projectCategoryName}</option>
+                            })}
+                        </select>
                     </div>
                 </div>
                 <div className='col-12'>
@@ -55,7 +82,8 @@ export default function FormEditProjectCyberBugs(props) {
                                 return editorRef.current = editor
                             }}
                             apiKey='sjskzwmsvvf48f63km1l2k34tvyvyj5i317qpwj5k53o0uip'
-                            initialValue="<p>This is the initial content of the editor.</p>"
+                            initialValue={values.description}
+                            onEditorChange={handleEditorChange}
                             name='description'
                             init={{
                                 height: 500,
@@ -78,3 +106,33 @@ export default function FormEditProjectCyberBugs(props) {
         </form>
     )
 }
+
+const editProjectForm = withFormik({
+    enableReinitialize: true,
+    mapPropsToValues: (props) => {
+        return {
+            id: props.projectEdit?.id,
+            projectName: props.projectEdit.projectName,
+            description: props.projectEdit.description,
+            categoryId: props.projectEdit.categoryId
+        }
+    },
+
+    validationSchema: Yup.object({
+
+    }),
+
+    handleSubmit: (values, { props, setSubmitting }) => {
+        console.log('values', values)
+    },
+
+    displayName: 'Edit Project',
+})(FormEditProjectCyberBugs);
+
+const mapStateToProps = (state) => {
+    return {
+        projectEdit: state.ProjectReducer.projectEdit
+    }
+}
+
+export default connect(mapStateToProps)(editProjectForm);
