@@ -83,6 +83,7 @@ function FormEditProjectCyberBugs(props) {
                             }}
                             apiKey='sjskzwmsvvf48f63km1l2k34tvyvyj5i317qpwj5k53o0uip'
                             initialValue={values.description}
+                            value={values.description}
                             onEditorChange={handleEditorChange}
                             name='description'
                             init={{
@@ -123,7 +124,10 @@ const editProjectForm = withFormik({
     }),
 
     handleSubmit: (values, { props, setSubmitting }) => {
-        console.log('values', values)
+        props.dispatch({
+            type: 'UPDATE_PROJECT_SAGA',
+            projectUpdate: values
+        })
     },
 
     displayName: 'Edit Project',

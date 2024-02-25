@@ -29,5 +29,13 @@ export const cyberbugsService = {
             method: 'GET',
             headers: {'Authorization': 'Bearer ' + localStorage.getItem(TOKEN)}
         })
+    },
+    updateProject: (projectUpdate) => {
+        return axios({
+            url: `${DOMAIN_CYBERBUG}/Project/updateProject?projectId=${projectUpdate.id}`,
+            method: 'PUT',
+            data: projectUpdate,
+            headers: {'Authorization': 'Bearer ' + localStorage.getItem(TOKEN)}
+        })
     }
 }

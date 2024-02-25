@@ -50,3 +50,35 @@ function* getListProjectSaga(action) {
 export function* followGetListProjectSaga() {
     yield takeLatest('GET_LIST_PROJECT_SAGA', getListProjectSaga)
 }
+
+//-----------------Update Project ----------------------
+
+function* updateProjectSaga(action) {
+    yield put({
+        type: DISPLAY_LOADING
+    })
+    yield delay(500);
+    try {
+        const { data, status } = yield call(() => { return cyberbugsService.updateProject(action.projectUpdate) })
+        if (status === STATUS_CODE.SUCCESS) {
+            // let history = yield select(state => state.HistoryReducer.history)
+            // history.push('/projectmanagement')
+            yield put ({
+                type: 'GET_LIST_PROJECT_SAGA'
+            })
+            yield put ({
+                type: 'CLOSE_DRAWER'
+            })
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
+    yield put({
+        type: HIDE_LOADING
+    })
+}
+
+export function* followUpdateProjectSaga() {
+    yield takeLatest('UPDATE_PROJECT_SAGA', updateProjectSaga)
+}

@@ -191,6 +191,10 @@ export default function ProjectManagement() {
               type: 'OPEN_FORM_EDIT_PROJECT',
               Component: <FormEditProjectCyberBugs/>
             })
+            dispatch({
+              type: 'EDIT_PROJECT',
+              projectEditModel: record,
+            })
           }}><EditOutlined /></Button>
           <Button type="primary" danger><DeleteOutlined /></Button>
         </Space>

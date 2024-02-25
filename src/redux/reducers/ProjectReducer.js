@@ -12,7 +12,8 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
 
-  case 'first':
+  case 'EDIT_PROJECT':
+    state.projectEdit = action.projectEditModel
     return { ...state}
 
   default:
