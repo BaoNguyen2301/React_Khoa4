@@ -18,7 +18,8 @@ export function * rootSaga (){
 
         ProjectSaga.followCreateProjectSaga(),
         ProjectSaga.followGetListProjectSaga(),
-        ProjectSaga.followUpdateProjectSaga()
+        ProjectSaga.followUpdateProjectSaga(),
+        ProjectSaga.followDeleteProjectSaga(),
 
     ])
 }

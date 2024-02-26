@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Button, Input, Space, Table, Tag } from 'antd';
+import { Button, Input, Space, Table, Tag, message, Popconfirm } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import parse from 'html-react-parser';
@@ -186,24 +186,38 @@ export default function ProjectManagement() {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary" onClick={()=>{
+          <Button type="primary" onClick={() => {
             dispatch({
               type: 'OPEN_FORM_EDIT_PROJECT',
-              Component: <FormEditProjectCyberBugs/>
+              Component: <FormEditProjectCyberBugs />
             })
             dispatch({
               type: 'EDIT_PROJECT',
               projectEditModel: record,
             })
           }}><EditOutlined /></Button>
-          <Button type="primary" danger><DeleteOutlined /></Button>
+          <Popconfirm
+            title="Delete the task"
+            description="Are you sure to delete this project?"
+            onConfirm={() => {
+              dispatch({
+                type: 'DELETE_PROJECT_SAGA',
+                idProject: record.id
+              })
+            }}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="primary" danger><DeleteOutlined /></Button>
+          </Popconfirm>
+
         </Space>
       ),
-      
+
     },
   ];
   return (
-    <div style={{width:'78%'}}>
+    <div style={{ width: '78%' }}>
       <h3 className='my-3'>Project Management</h3>
       <Table columns={columns} rowKey={'id'} dataSource={projectList} />
     </div>

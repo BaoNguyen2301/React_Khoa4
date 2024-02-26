@@ -17,11 +17,13 @@ function* signinSaga(action) {
         const { data, status } = yield call(()=> {return cyberbugsService.signinCyberBugs(action.userLogin)})
         localStorage.setItem(TOKEN, data.content.accessToken)
         localStorage.setItem(USER_LOGIN, JSON.stringify(data.content)) 
-        
-        yield put({
-            type: USLOGIN,
-            userLogin: data.content
-        })
+        if(status === STATUS_CODE.SUCCESS){
+            yield put({
+                type: USLOGIN,
+                userLogin: data.content
+            })
+        }
+       
 
         let history = yield select (state => state.HistoryReducer.history)
         history.push('/home')
