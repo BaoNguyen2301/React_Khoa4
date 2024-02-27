@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Button, Input, Space, Table, Tag, message, Popconfirm } from 'antd';
+import { Button, Input, Space, Table, Tag, message, Popconfirm, Avatar, Popover, AutoComplete } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import parse from 'html-react-parser';
@@ -12,7 +12,7 @@ export default function ProjectManagement() {
 
   const projectList = useSelector(state => state.ProjectCyberBugsReducer.projectList)
   const dispatch = useDispatch();
-
+  console.log(projectList)
   useEffect(() => {
     dispatch({
       type: 'GET_LIST_PROJECT_SAGA'
@@ -180,6 +180,33 @@ export default function ProjectManagement() {
         return a.projectName.trim().toLowerCase().length - b.projectName.trim().toLowerCase().length
       },
       sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'members',
+      dataIndex: 'members',
+      key: 'members',
+      render: (text, record, index) => {
+        console.log(record)
+        return <div>
+          {record.members?.slice(0, 3).map((members, index) => {
+            return <Avatar src={members.avatar} />
+          })}
+          {record.members.length > 3 ? <Avatar>...</Avatar> : ''}
+          <Popover placement="rightTop" title='Add user' content={() =>
+            <AutoComplete
+              onSearch={(value)=>{
+                dispatch({
+                  type: 'GET_USER_API',
+                  keyWord: value
+                })
+              }}
+              placeholder="input here"
+              style={{ width: 200 }}
+            />}>
+            <Avatar style={{cursor: 'pointer'}}>+</Avatar>
+          </Popover>
+        </div>
+      },
     },
     {
       title: 'Action',

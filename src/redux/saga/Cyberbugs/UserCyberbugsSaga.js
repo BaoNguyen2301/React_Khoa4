@@ -4,6 +4,7 @@ import { USER_SIGNIN_API, USLOGIN } from '../../constants/Cyberbugs/CyberbugCont
 import { DISPLAY_LOADING, HIDE_LOADING } from '../../constants/LoadingConstant'
 import { cyberbugsService } from '../../../services/CyberbugsService'
 import { STATUS_CODE, TOKEN, USER_LOGIN} from '../../../util/constants/settingSystem'
+import { userService } from '../../../services/UserService'
 
 
 
@@ -37,4 +38,23 @@ function* signinSaga(action) {
 
 export function* followSignin() {
     yield takeLatest(USER_SIGNIN_API, signinSaga)
+}
+
+//--------------------------Get User
+
+function* getUserSaga(action) {
+    try {
+        const { data, status } = yield call(()=> {return userService.getUser(action.keyWord)})
+        console.log(data)
+        if(status === STATUS_CODE.SUCCESS){
+           
+        }
+       
+    }catch(err){
+        console.log(err.response.data)
+    }
+}
+
+export function* followGetUser() {
+    yield takeLatest('GET_USER_API', getUserSaga)
 }

@@ -13,6 +13,7 @@ export function * rootSaga (){
         ToDoListSagaAction.followActionRejectTaskApi(),
 
         UserCyberbugsSaga.followSignin(),
+        UserCyberbugsSaga.followGetUser(),
         
         ProjectCategorySaga.followGetAllProjectCategorySaga(),
 
