@@ -10,6 +10,14 @@ export class UserService extends baseService{
        return this.get(`Users/getUser?keyword=${keyWord}`)
     }
 
+    assignUserProject = (userProject) =>{
+        return this.post('Project/assignUserProject', userProject)
+    }
+
+    deleteUserFromProject = (userDelete) =>{
+        return this.post('/Project/removeUserFromProject', userDelete)
+    }
+
 }
 
 export const userService = new UserService();

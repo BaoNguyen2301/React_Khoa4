@@ -9,7 +9,8 @@ if (localStorage.getItem(USER_LOGIN)) {
 }
 
 const stateDefault = {
-  userLogin: usLogin
+  userLogin: usLogin,
+  userSearch: []
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -17,6 +18,10 @@ export default (state = stateDefault, action) => {
   switch (action.type) {
     case USLOGIN: {
       state.userLogin = action.userLogin
+      return {...state}
+    }
+    case 'GET_USER_SEARCH': {
+      state.userSearch = action.listUserSearch;
       return {...state}
     }
     default:

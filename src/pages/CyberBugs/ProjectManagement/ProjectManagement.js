@@ -11,8 +11,10 @@ import FormEditProjectCyberBugs from '../../../components/Form/FormEditProject/F
 export default function ProjectManagement() {
 
   const projectList = useSelector(state => state.ProjectCyberBugsReducer.projectList)
+  const { userSearch } = useSelector(state => state.UserCyberbugsReducer)
+  const [value, setValue] = useState('')
+  const searchRef = useRef(null)
   const dispatch = useDispatch();
-  console.log(projectList)
   useEffect(() => {
     dispatch({
       type: 'GET_LIST_PROJECT_SAGA'
@@ -161,12 +163,6 @@ export default function ProjectManagement() {
         return a.projectName.trim().toLowerCase().length - b.projectName.trim().toLowerCase().length
       },
       sortDirections: ['descend', 'ascend'],
-      // render: (text, record, index) => {
-      //   let jsxContent = parse(text)
-      //   return <div key={index}>
-      //     {jsxContent}
-      //   </div>
-      // }
     },
     {
       title: 'creator',
@@ -186,15 +182,70 @@ export default function ProjectManagement() {
       dataIndex: 'members',
       key: 'members',
       render: (text, record, index) => {
-        console.log(record)
         return <div>
           {record.members?.slice(0, 3).map((members, index) => {
-            return <Avatar src={members.avatar} />
+            return <Popover placement="top" title='member' content={() => {
+              return <table className='table'>
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>avatar</th>
+                    <th>name</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {record.members?.map((item, index) => {
+                    return <tr key={index}>
+                      <td>{item.userId}</td>
+                      <td><img src={item.avatar} width={30} height={30}></img></td>
+                      <td>{item.name}</td>
+                      <td>
+                        <Button type="primary" danger onClick={() => {
+                          dispatch({
+                            type: 'DELETE_USER_PROJECT_API',
+                            userDelete: {
+                              projectId: record.id,
+                              userId: item.userId
+                            }
+                          })
+                        }}><DeleteOutlined /></Button>
+                      </td>
+                    </tr>
+                  })}
+                </tbody>
+              </table>
+            }}>
+              <Avatar src={members.avatar} />
+            </Popover>
           })}
-          {record.members.length > 3 ? <Avatar>...</Avatar> : ''}
+          {record.members?.length > 3 ? <Avatar>...</Avatar> : ''}
           <Popover placement="rightTop" title='Add user' content={() =>
             <AutoComplete
-              onSearch={(value)=>{
+              options={userSearch?.map((user, index) => {
+                return { label: user.name, value: user.userId.toString() }
+              })}
+
+              value={value}
+
+              onChange={(text) => {
+                setValue(text)
+              }}
+
+              onSelect={(valueSelect, option) => {
+                setValue(option.label)
+                searchRef.current = setTimeout(() => {
+                  dispatch({
+                    type: 'ADD_USER_PROJECT_API',
+                    userProject: {
+                      "projectId": record.id,
+                      "userId": valueSelect
+                    }
+                  })
+                })
+              }}
+
+              onSearch={(value) => {
                 dispatch({
                   type: 'GET_USER_API',
                   keyWord: value
@@ -203,7 +254,7 @@ export default function ProjectManagement() {
               placeholder="input here"
               style={{ width: 200 }}
             />}>
-            <Avatar style={{cursor: 'pointer'}}>+</Avatar>
+            <Avatar style={{ cursor: 'pointer' }}>+</Avatar>
           </Popover>
         </div>
       },

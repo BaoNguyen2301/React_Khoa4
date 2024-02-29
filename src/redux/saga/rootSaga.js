@@ -14,6 +14,8 @@ export function * rootSaga (){
 
         UserCyberbugsSaga.followSignin(),
         UserCyberbugsSaga.followGetUser(),
+        UserCyberbugsSaga.followAddUserProject(),
+        UserCyberbugsSaga.followDeleteUserProject(),
         
         ProjectCategorySaga.followGetAllProjectCategorySaga(),
 
