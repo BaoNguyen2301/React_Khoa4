@@ -43,7 +43,6 @@ export function* followSignin() {
 //--------------------------Get User-------------------------
 
 function* getUserSaga(action) {
-    console.log(action.keyWord)
     try {
         const { data, status } = yield call(() => { return userService.getUser(action.keyWord) })
         if (status === STATUS_CODE.SUCCESS) {

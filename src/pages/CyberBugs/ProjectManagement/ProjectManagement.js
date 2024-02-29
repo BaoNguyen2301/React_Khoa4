@@ -234,6 +234,9 @@ export default function ProjectManagement() {
 
               onSelect={(valueSelect, option) => {
                 setValue(option.label)
+                if(searchRef.current){
+                  clearTimeout(searchRef.current)
+                }
                 searchRef.current = setTimeout(() => {
                   dispatch({
                     type: 'ADD_USER_PROJECT_API',
@@ -242,7 +245,7 @@ export default function ProjectManagement() {
                       "userId": valueSelect
                     }
                   })
-                })
+                }, 300)
               }}
 
               onSearch={(value) => {
