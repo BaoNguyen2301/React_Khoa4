@@ -23,10 +23,10 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { ADD_HISTORY } from './util/constants/settingSystem';
 import { CyberBugsTemplate } from './templates/HomeTemplate/CyberBugsTemplate';
-import indexCyberBugs from './redux/saga/Cyberbugs/indexCyberBugs';
 import CreateProject from './pages/CyberBugs/CreateProject/CreateProject';
 import ProjectManagement from './pages/CyberBugs/ProjectManagement/ProjectManagement';
 import ModalCyberBugs from './HOC/CyberBugsHOC/ModalCyberBugs'
+import IndexCyberBugs from './redux/saga/Cyberbugs/indexCyberBugs';
 
 function App() {
 
@@ -53,7 +53,7 @@ function App() {
         <HomeTemmlate exact path='/home' Component={Home} />
         <HomeTemmlate exact path='/contact' Component={Contact} />
         <HomeTemmlate exact path='/about' Component={About} />
-        <HomeTemmlate exact path='/' Component={Home} />
+        <CyberBugsTemplate exact path='/' Component={ProjectManagement} />
         <UserLoginTemplate exact path='/login' Component={LoginCyberBugs} />
         <HomeTemmlate exact path='/detail/:id' Component={Detail} />
         <HomeTemmlate exact path='/profile' Component={Profile} />
@@ -62,9 +62,10 @@ function App() {
         <HomeTemmlate exact path='/todolistrfcredux' Component={ToDoListRedux} />
         <HomeTemmlate exact path='/todolistrfcsaga' Component={ToDoListSaga} />
         <HomeTemmlate exact path='/demohocmodal' Component={DEmoHocModal} />
-        <CyberBugsTemplate exact path='/cyberbugs' Component={indexCyberBugs}/>
+        <CyberBugsTemplate exact path='/cyberbugs' Component={IndexCyberBugs}/>
         <CyberBugsTemplate exact path='/createprojectsetting' Component={CreateProject}/>
         <CyberBugsTemplate exact path='/projectmanagement' Component={ProjectManagement}/>
+        <CyberBugsTemplate exact path='/projectdetail/:projectId' Component={IndexCyberBugs}/>
         <HomeTemmlate path="*" Component={PageNotFound} />
       </Switch>
     </>

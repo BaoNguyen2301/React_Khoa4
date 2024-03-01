@@ -116,3 +116,28 @@ function* deleteProjectSaga(action) {
 export function* followDeleteProjectSaga() {
     yield takeLatest('DELETE_PROJECT_SAGA', deleteProjectSaga)
 }
+
+//-----------------Get Project Detail----------------------
+
+function* getProjectDetailSaga(action) {
+    yield put({
+        type: DISPLAY_LOADING
+    })
+    yield delay(500);
+    try {
+        const { data, status } = yield call(() => { return projectService.getProjectDetail(action.projectId) })
+        yield put ({
+            type: 'PUT_DETAIL_SAGA',
+            projectDetail: data.content
+        })
+    } catch (err) {
+        console.log(err)
+    }
+    yield put({
+        type: HIDE_LOADING
+    })
+}
+
+export function* followGetProjectDetailSaga() {
+    yield takeLatest('GET_PROJECT_DETAIL_SAGA', getProjectDetailSaga)
+}

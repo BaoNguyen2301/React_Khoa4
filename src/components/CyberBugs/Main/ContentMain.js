@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function ContentMain() {
     return (
-        <div className="content" style={{ display: 'flex' }}>
+        <div className="content" style={{ display: 'flex'}}>
             <div className="card" style={{ width: '17rem', height: '25rem' }}>
                 <div className="card-header">
                     BACKLOG 3

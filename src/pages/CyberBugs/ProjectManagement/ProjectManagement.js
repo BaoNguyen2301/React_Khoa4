@@ -6,6 +6,7 @@ import parse from 'html-react-parser';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import FormEditProjectCyberBugs from '../../../components/Form/FormEditProject/FormEditProjectCyberBugs';
+import { NavLink } from 'react-router-dom/cjs/react-router-dom';
 
 
 export default function ProjectManagement() {
@@ -149,6 +150,9 @@ export default function ProjectManagement() {
       key: 'projectName',
       width: '20%',
       ...getColumnSearchProps('projectName'),
+      render: (text, record, index) => {
+        return <NavLink to={`/projectdetail/${record.id}`}>{text}</NavLink>
+      },
       sorter: (a, b) => {
         return a.projectName.trim().toLowerCase().length - b.projectName.trim().toLowerCase().length
       },

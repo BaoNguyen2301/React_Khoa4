@@ -23,6 +23,7 @@ export function * rootSaga (){
         ProjectSaga.followGetListProjectSaga(),
         ProjectSaga.followUpdateProjectSaga(),
         ProjectSaga.followDeleteProjectSaga(),
+        ProjectSaga.followGetProjectDetailSaga()
 
     ])
 }

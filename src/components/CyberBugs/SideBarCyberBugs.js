@@ -8,7 +8,7 @@ import {
     PlusOutlined,
     SearchOutlined
 } from '@ant-design/icons';
-import { Layout, Menu, Button, theme } from 'antd';
+import { Layout, Menu, Button, theme, Flex } from 'antd';
 const { Header, Sider, Content } = Layout;
 
 export default function SideBarCyberBugs() {
@@ -17,9 +17,8 @@ export default function SideBarCyberBugs() {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
     return (
-        <Layout>
-
-            <Sider trigger={null} collapsible collapsed={collapsed} style={{ height: '100%' }}>
+        <Layout style={{flex: 'none'}}>
+            <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className='text-right'>
                     <Button
                         type="text"
