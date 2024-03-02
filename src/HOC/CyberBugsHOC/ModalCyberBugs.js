@@ -5,7 +5,7 @@ import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from
 const { Option } = Select;
 const ModalCyberBugs = () => {
 
-    const {visible, ComponentContentDrawer, callBackSubmit} = useSelector(state => state.DrawerReducer)
+    const {visible, ComponentContentDrawer, callBackSubmit, title} = useSelector(state => state.DrawerReducer)
 
     const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ const ModalCyberBugs = () => {
     return (
         <>
             <Drawer
-                title="Create a new account"
+                title={title}
                 width={720}
                 onClose={onClose}
                 open={visible}

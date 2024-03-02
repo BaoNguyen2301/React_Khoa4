@@ -274,6 +274,7 @@ export default function ProjectManagement() {
           <Button type="primary" onClick={() => {
             dispatch({
               type: 'OPEN_FORM_EDIT_PROJECT',
+              title: 'Edit project',
               Component: <FormEditProjectCyberBugs />
             })
             dispatch({

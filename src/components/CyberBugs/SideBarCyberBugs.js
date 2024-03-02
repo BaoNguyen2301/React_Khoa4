@@ -9,10 +9,14 @@ import {
     SearchOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, Button, theme, Flex } from 'antd';
+import {useDispatch, useSelector} from 'react-redux'
+import FormCreateTaskCyberBugs from '../Form/FormCreateTask/FormCreateTaskCyberBugs';
 const { Header, Sider, Content } = Layout;
 
 export default function SideBarCyberBugs() {
     const [collapsed, setCollapsed] = useState(false);
+    const dispatch = useDispatch();
+
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
@@ -42,7 +46,14 @@ export default function SideBarCyberBugs() {
                         {
                             key: '1',
                             icon: <PlusOutlined />,
-                            label: 'Add',
+                            label: 'Create',
+                            onClick:()=>{
+                                dispatch({
+                                    type: 'OPEN_FORM_CREATE_TASK',
+                                    Component: <FormCreateTaskCyberBugs/>,
+                                    title: 'Create task'
+                                })
+                            }
                         },
                         {
                             key: '2',
