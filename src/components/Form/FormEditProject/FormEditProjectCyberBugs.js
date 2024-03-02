@@ -7,7 +7,7 @@ import { getAllProjectCategoryAction } from '../../../redux/actions/CyberBugs/Cy
 
 function FormEditProjectCyberBugs(props) {
 
-    
+
     const arrProjectCategory = useSelector(state => state.ProjectCategoryReducer.arrProjectCategory);
 
     const {
@@ -20,9 +20,9 @@ function FormEditProjectCyberBugs(props) {
         setFieldValue
     } = props;
 
-    const handleEditorChange= (value, editor)=> {
+    const handleEditorChange = (value, editor) => {
         setFieldValue('description', value);
-      }
+    }
 
     const editorRef = useRef(null);
     const log = () => {
@@ -50,7 +50,7 @@ function FormEditProjectCyberBugs(props) {
 
 
     return (
-        <form className='container-fluid' onSubmit={handleSubmit}>
+        <form className='container-fluid' onSubmit={handleSubmit} onChange={handleChange}>
             <div className='row'>
                 <div className='col-4'>
                     <div className='form-group'>
@@ -85,6 +85,7 @@ function FormEditProjectCyberBugs(props) {
                             initialValue={values.description}
                             value={values.description}
                             onEditorChange={handleEditorChange}
+                            onChange={handleEditorChange}
                             name='description'
                             init={{
                                 height: 500,

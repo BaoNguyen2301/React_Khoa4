@@ -25,10 +25,10 @@ export default function IndexCyberBugs(props) {
 
   return (
     <div className='main'>
-      <HeaderMain />
-      <h3>Cyber Board</h3>
-      <InfoMain />
-      <ContentMain />
+      <HeaderMain projectDetail= {projectDetail}/>
+      <h3>{projectDetail.projectName}</h3>
+      <InfoMain projectDetail= {projectDetail}/>
+      <ContentMain projectDetail= {projectDetail}/>
     </div>
   )
 }
