@@ -238,7 +238,7 @@ export default function ProjectManagement() {
 
               onSelect={(valueSelect, option) => {
                 setValue(option.label)
-                if(searchRef.current){
+                if (searchRef.current) {
                   clearTimeout(searchRef.current)
                 }
                 searchRef.current = setTimeout(() => {
@@ -269,6 +269,7 @@ export default function ProjectManagement() {
     {
       title: 'Action',
       key: 'action',
+      width: '20%',
       render: (_, record) => (
         <Space size="middle">
           <Button type="primary" onClick={() => {
@@ -282,7 +283,7 @@ export default function ProjectManagement() {
               projectEditModel: record,
             })
           }}><EditOutlined /></Button>
-          <Popconfirm
+          {/* <Popconfirm
             title="Delete the task"
             description="Are you sure to delete this project?"
             onConfirm={() => {
@@ -295,6 +296,22 @@ export default function ProjectManagement() {
             cancelText="No"
           >
             <Button type="primary" danger><DeleteOutlined /></Button>
+          </Popconfirm> */}
+          <Popconfirm
+            title="Delete the task"
+            description="Are you sure to delete this task?"
+            onConfirm={() => {
+              dispatch({
+                type: 'DELETE_PROJECT_SAGA',
+                idProject: record.id
+              })
+            }}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="primary" danger>
+            <DeleteOutlined />
+            </Button>
           </Popconfirm>
 
         </Space>

@@ -10,7 +10,8 @@ if (localStorage.getItem(USER_LOGIN)) {
 
 const stateDefault = {
   userLogin: usLogin,
-  userSearch: []
+  userSearch: [],
+  // arrUser: [] //Array user cho the Select trong formCreateTask
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
