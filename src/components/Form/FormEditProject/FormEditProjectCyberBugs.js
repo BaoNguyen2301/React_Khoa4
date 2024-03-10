@@ -125,6 +125,7 @@ const editProjectForm = withFormik({
     }),
 
     handleSubmit: (values, { props, setSubmitting }) => {
+        console.log(values)
         props.dispatch({
             type: 'UPDATE_PROJECT_SAGA',
             projectUpdate: values

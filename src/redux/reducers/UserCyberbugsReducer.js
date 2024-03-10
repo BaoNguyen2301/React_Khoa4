@@ -1,5 +1,6 @@
 import { USER_LOGIN } from "../../util/constants/settingSystem";
 import { USLOGIN } from "../constants/Cyberbugs/CyberbugContant";
+import { GET_USER_BY_PROJECT_ID } from "../constants/Cyberbugs/UserContant";
 
 
 let usLogin = {};
@@ -11,6 +12,7 @@ if (localStorage.getItem(USER_LOGIN)) {
 const stateDefault = {
   userLogin: usLogin,
   userSearch: [],
+  arrUser: []
   // arrUser: [] //Array user cho the Select trong formCreateTask
 }
 
@@ -19,12 +21,14 @@ export default (state = stateDefault, action) => {
   switch (action.type) {
     case USLOGIN: {
       state.userLogin = action.userLogin
-      return {...state}
+      return { ...state }
     }
     case 'GET_USER_SEARCH': {
       state.userSearch = action.listUserSearch;
-      return {...state}
+      return { ...state }
     }
+    case GET_USER_BY_PROJECT_ID:
+      return { ...state, arrUser: action.arrUser }
     default:
       return { ...state }
   }

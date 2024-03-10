@@ -5,6 +5,7 @@ import { DISPLAY_LOADING, HIDE_LOADING } from '../../constants/LoadingConstant'
 import { cyberbugsService } from '../../../services/CyberbugsService'
 import { STATUS_CODE, TOKEN, USER_LOGIN } from '../../../util/constants/settingSystem'
 import { userService } from '../../../services/UserService'
+import { GET_USER_BY_PROJECT_ID, GET_USER_BY_PROJECT_ID_SAGA } from '../../constants/Cyberbugs/UserContant'
 
 
 
@@ -97,4 +98,32 @@ function* deleteUserProjectSaga(action) {
 
 export function* followDeleteUserProject() {
     yield takeLatest('DELETE_USER_PROJECT_API', deleteUserProjectSaga)
+}
+
+//----------------Get User By project---------------------
+
+function* getUserByProjectSaga(action) {
+    const {idProject} = action;
+    try {
+        const { data, status } = yield call(() => { return userService.getUserByProjectId(idProject) })
+        if (status === STATUS_CODE.SUCCESS) {
+            yield put({
+                type: GET_USER_BY_PROJECT_ID,
+                arrUser: data.content
+            })
+        }
+
+    } catch (err) {
+        console.log(err.response?.data)
+        if(err.response?.data.statusCode === STATUS_CODE.NOTFOUND){
+            yield put({
+                type: GET_USER_BY_PROJECT_ID,
+                arrUser: []
+            })
+        }
+    }
+}
+
+export function* followGetUserByProjectSaga() {
+    yield takeLatest(GET_USER_BY_PROJECT_ID_SAGA, getUserByProjectSaga)
 }

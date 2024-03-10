@@ -13,7 +13,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import FormCreateTaskCyberBugs from '../Form/FormCreateTask/FormCreateTaskCyberBugs';
 const { Header, Sider, Content } = Layout;
 
-export default function SideBarCyberBugs() {
+export default function SideBarCyberBugs(props) {
     const [collapsed, setCollapsed] = useState(false);
     const dispatch = useDispatch();
 

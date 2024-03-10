@@ -8,6 +8,7 @@ import { projectService } from '../../../services/ProjectService'
 import { openNotificationWithIcon } from '../../../util/Notification/notificationCyberBugs'
 import { GET_ALL_PROJECT, GET_ALL_PROJECT_SAGA } from '../../constants/Cyberbugs/ProjectContant'
 import { getAllProject } from '../../actions/CyberBugs/ProjectAction'
+import { getAllProjectByIdSaga } from '../../actions/CyberBugs/UserAction'
 
 function* createProjectSaga(action) {
     yield put({
@@ -153,7 +154,9 @@ function* getAllProjectSaga(action) {
             yield put({
                 type: GET_ALL_PROJECT,
                 arrProject: data.content
-        })
+            })
+
+            yield put (getAllProjectByIdSaga(data.content[0]?.id))
         }
 
     } catch (err) {

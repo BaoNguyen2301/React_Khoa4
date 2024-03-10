@@ -5,6 +5,8 @@ import * as ProjectCategorySaga from './Cyberbugs/ProjectCategorySaga'
 import * as ProjectSaga from './Cyberbugs/ProjectSaga'
 import * as TaskTypeSaga from './Cyberbugs/TaskTypeSaga'
 import * as PrioritySaga from './Cyberbugs/PrioritySaga'
+import * as TaskSaga from './Cyberbugs/TaskSaga'
+import * as StatusSaga from './Cyberbugs/StatusSaga'
 export function * rootSaga (){
     // yield fork(getTaskApiSaga)
     yield all([
@@ -18,6 +20,7 @@ export function * rootSaga (){
         UserCyberbugsSaga.followGetUser(),
         UserCyberbugsSaga.followAddUserProject(),
         UserCyberbugsSaga.followDeleteUserProject(),
+        UserCyberbugsSaga.followGetUserByProjectSaga(),
         
         ProjectCategorySaga.followGetAllProjectCategorySaga(),
 
@@ -30,7 +33,11 @@ export function * rootSaga (){
 
         TaskTypeSaga.followGetAllTaskTypeSaga(),
 
-        PrioritySaga.followGetAllPrioritySaga()
+        PrioritySaga.followGetAllPrioritySaga(),
+
+        TaskSaga.followCreateTaskSaga(),
+
+        StatusSaga.followGetAllStatusSaga()
 
     ])
 }

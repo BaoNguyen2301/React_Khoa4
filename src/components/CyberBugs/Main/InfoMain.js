@@ -1,5 +1,4 @@
 import React from 'react'
-import parse from 'html-react-parser';
 
 export default function InfoMain(props) {
     const renderAvatar = () => {
@@ -11,9 +10,7 @@ export default function InfoMain(props) {
     }
     return (
         <>
-            <section>
-                {parse(props.projectDetail.description)}
-            </section>
+            <section dangerouslySetInnerHTML={{ __html: props.projectDetail.description }}></section>
             <div className="info" style={{ display: 'flex' }}>
                 <div className="search-block">
                     <input className="search" />

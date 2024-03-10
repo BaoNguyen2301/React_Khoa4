@@ -7,9 +7,7 @@ import {useSelector, useDispatch} from 'react-redux'
 export default function IndexCyberBugs(props) {
   const {projectDetail} = useSelector(state => state.ProjectReducer)
   const dispatch = useDispatch()
-
-  console.log('projectdetail', projectDetail)
-
+  console.log('projectDetail', projectDetail)
   useEffect(() => {
     const {projectId} = props.match.params;
     dispatch({
