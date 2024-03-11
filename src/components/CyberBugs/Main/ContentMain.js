@@ -4,33 +4,34 @@ export default function ContentMain(props) {
     const {projectDetail} = props;
     const renderCardTaskList = () => {
         return projectDetail.lstTask?.map((task, index)=>{
-            return <div key={index} className="card" style={{ width: '17rem', height: '25rem' }}>
+            return <div key={index} className="card" style={{ width: '17rem', height: 'auto' }}>
             <div className="card-header">
                 {task.statusName}
             </div>
             <ul className="list-group list-group-flush">
-                <li className="list-group-item" data-toggle="modal" data-target="#infoModal" style={{ cursor: 'pointer' }}>
-                    <p>
-                        Each issue has a single reporter but can have multiple
-                        assignees
+                {task.lstTaskDeTail.map((taskItem, index)=>{
+                    return <li key={index} className="list-group-item" data-toggle="modal" data-target="#infoModal" style={{ cursor: 'pointer' }}>
+                    <p className='font-weight-bold'>
+                        {taskItem.taskName}
                     </p>
                     <div className="block" style={{ display: 'flex' }}>
                         <div className="block-left">
-                            <i className="fa fa-bookmark" />
-                            <i className="fa fa-arrow-up" />
+                            <p className='text-danger'>{taskItem.priorityTask.priority}</p>
+                            {/* <i className="fa fa-bookmark" />
+                            <i className="fa fa-arrow-up" /> */}
                         </div>
                         <div className="block-right">
                             <div className="avatar-group" style={{ display: 'flex' }}>
-                                <div className="avatar">
-                                    <img src={require('../../../assets/img/download (1).jfif')} alt='../../../assets/img/download (1).jfif'/>
+                                {taskItem.assigness?.map((assign, index)=>{
+                                    return <div key={index} className="avatar">
+                                    <img src={assign.avatar} alt={assign.avatar}/>
                                 </div>
-                                <div className="avatar">
-                                    <img src={require('../../../assets/img/download (2).jfif')} alt='../../../assets/img/download (2).jfif'/>
-                                </div>
+                                })}
                             </div>
                         </div>
                     </div>
                 </li>
+                })}
             </ul>
         </div>
         })

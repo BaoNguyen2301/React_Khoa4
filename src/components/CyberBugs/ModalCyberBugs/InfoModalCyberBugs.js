@@ -1,6 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllStatusSaga } from '../../../redux/actions/CyberBugs/StatusAction'
 
-export default function InfoModalCyberBugs() {
+export default function InfoModalCyberBugs(props) {
+
+    const { taskDetailModal } = useSelector(state => state.TaskReducer)
+    console.log('taskDetailModal', taskDetailModal)
+    const { statusList } = useSelector(state => state.StatusReducer)
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getAllStatusSaga())
+
+        return () => { }
+    }, [])
+
+
     return (
         <div className="modal fade" id="infoModal" tabIndex={-1} role="dialog" aria-labelledby="infoModal" aria-hidden="true">
             <div className="modal-dialog modal-info">
@@ -8,7 +24,7 @@ export default function InfoModalCyberBugs() {
                     <div className="modal-header">
                         <div className="task-title">
                             <i className="fa fa-bookmark" />
-                            <span>TASK-217871</span>
+                            <span>{taskDetailModal.taskName}</span>
                         </div>
                         <div style={{ display: 'flex' }} className="task-click">
                             <div>
@@ -29,23 +45,13 @@ export default function InfoModalCyberBugs() {
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-8">
-                                    <p className="issue">This is an issue of type: Task.</p>
+                                    <p className="issue">This is an issue of type: {taskDetailModal.taskTypeDetail.taskType}.</p>
                                     <div className="description">
                                         <p>Description</p>
-                                        <p>
-                                            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                                            Esse expedita quis vero tempora error sed reprehenderit
-                                            sequi laborum, repellendus quod laudantium tenetur nobis
-                                            modi reiciendis sint architecto. Autem libero quibusdam
-                                            odit assumenda fugiat? Beatae aliquid labore vitae
-                                            obcaecati sapiente asperiores quia amet id aut, natus quo
-                                            molestiae quod voluptas, temporibus iusto laudantium sit
-                                            tempora sequi. Rem, itaque id, fugit magnam asperiores
-                                            voluptas consectetur aliquid vel error illum, delectus eum
-                                            eveniet laudantium at repudiandae!
+                                        <p dangerouslySetInnerHTML={{ __html: taskDetailModal.description }}>
                                         </p>
                                     </div>
-                                    <div style={{ fontWeight: 500, marginBottom: 10 }}>
+                                    {/* <div style={{ fontWeight: 500, marginBottom: 10 }}>
                                         Jira Software (software projects) issue types:
                                     </div>
                                     <div className="title">
@@ -67,7 +73,7 @@ export default function InfoModalCyberBugs() {
                                             <h3>TASK <i className="fa fa-tasks" /></h3>
                                             <p>A task represents work that needs to be done</p>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="comment">
                                         <h6>Comment</h6>
                                         <div className="block-comment" style={{ display: 'flex' }}>
@@ -115,24 +121,29 @@ export default function InfoModalCyberBugs() {
                                     <div className="status">
                                         <h6>STATUS</h6>
                                         <select className="custom-select">
-                                            <option selected>SELECTED FOR DEVELOPMENT</option>
-                                            <option value={1}>One</option>
-                                            <option value={2}>Two</option>
-                                            <option value={3}>Three</option>
+                                            {statusList.map((status, index) => {
+                                                const selectedStatus = taskDetailModal.statusId == status.statusId;
+
+                                                if (selectedStatus) {
+                                                    return <option key={index} value={status.statusId} selected>{status.statusName}</option>
+                                                } else {
+                                                    return <option key={index} value={status.statusId}>{status.statusName}</option>
+                                                }
+                                            })}
                                         </select>
                                     </div>
                                     <div className="assignees">
                                         <h6>ASSIGNEES</h6>
                                         <div style={{ display: 'flex' }}>
-                                            <div style={{ display: 'flex' }} className="item">
-                                                <div className="avatar">
-                                                    <img src={require('../../../assets/img/download (1).jfif')} alt='1' />
+                                            {taskDetailModal.assigness?.map((assign, index) => {
+                                                return <div key={index} style={{ display: 'flex' }} className="item">
+                                                    <p className="name">
+                                                        {assign.name}
+                                                        <i className="fa fa-times" style={{ marginLeft: 5 }} />
+                                                    </p>
                                                 </div>
-                                                <p className="name">
-                                                    Pickle Rick
-                                                    <i className="fa fa-times" style={{ marginLeft: 5 }} />
-                                                </p>
-                                            </div>
+                                            })}
+
                                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa fa-plus" style={{ marginRight: 5 }} /><span>Add more</span>
                                             </div>

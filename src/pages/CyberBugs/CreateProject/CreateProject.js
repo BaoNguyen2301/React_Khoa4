@@ -79,7 +79,6 @@ const createProjectForm = withFormik({
   }),
 
   handleSubmit: (values, { props, setSubmitting }) => {
-    console.log(values)
     props.dispatch({
       type: 'CREATE_PROJECT_SAGA',
       newProject: values
