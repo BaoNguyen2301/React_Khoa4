@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllStatusSaga } from '../../../redux/actions/CyberBugs/StatusAction'
+import { getAllPrioritySaga } from '../../../redux/actions/CyberBugs/PriorityAction'
 
 export default function InfoModalCyberBugs(props) {
 
@@ -8,10 +9,35 @@ export default function InfoModalCyberBugs(props) {
     console.log('taskDetailModal', taskDetailModal)
     const { statusList } = useSelector(state => state.StatusReducer)
 
+    const { arrPriority } = useSelector(state => state.PriorityReducer)
+
     const dispatch = useDispatch()
+
+    const renderTimeTracking = () =>{
+
+        const {timeTrackingSpent, timeTrackingRemaining} = taskDetailModal
+
+        const max = Number(timeTrackingSpent) + Number(timeTrackingRemaining)
+        
+        const percent = Math.round(Number(timeTrackingSpent)/max *100)
+
+        return <div style={{ display: 'flex' }}>
+        <i className="fa fa-clock" />
+        <div style={{ width: '100%' }}>
+            <div className="progress">
+                <div className="progress-bar" role="progressbar" style={{ width: `${percent}%`}} aria-valuenow={Number(timeTrackingSpent)} aria-valuemin={Number(timeTrackingRemaining)} aria-valuemax={max} />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <p className="logged">{timeTrackingSpent} logged</p>
+                <p className="estimate-time">{timeTrackingRemaining} estimated</p>
+            </div>
+        </div>
+    </div>
+    }
 
     useEffect(() => {
         dispatch(getAllStatusSaga())
+        dispatch(getAllPrioritySaga())
 
         return () => { }
     }, [])
@@ -45,35 +71,12 @@ export default function InfoModalCyberBugs(props) {
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-8">
-                                    <p className="issue">This is an issue of type: {taskDetailModal.taskTypeDetail.taskType}.</p>
+                                    <p className="issue">This is an issue of type: {taskDetailModal.taskTypeDetail?.taskType}.</p>
                                     <div className="description">
                                         <p>Description</p>
                                         <p dangerouslySetInnerHTML={{ __html: taskDetailModal.description }}>
                                         </p>
                                     </div>
-                                    {/* <div style={{ fontWeight: 500, marginBottom: 10 }}>
-                                        Jira Software (software projects) issue types:
-                                    </div>
-                                    <div className="title">
-                                        <div className="title-item">
-                                            <h3>BUG <i className="fa fa-bug" /></h3>
-                                            <p>
-                                                A bug is a problem which impairs or prevents the
-                                                function of a product.
-                                            </p>
-                                        </div>
-                                        <div className="title-item">
-                                            <h3>STORY <i className="fa fa-book-reader" /></h3>
-                                            <p>
-                                                A user story is the smallest unit of work that needs to
-                                                be done.
-                                            </p>
-                                        </div>
-                                        <div className="title-item">
-                                            <h3>TASK <i className="fa fa-tasks" /></h3>
-                                            <p>A task represents work that needs to be done</p>
-                                        </div>
-                                    </div> */}
                                     <div className="comment">
                                         <h6>Comment</h6>
                                         <div className="block-comment" style={{ display: 'flex' }}>
@@ -120,15 +123,9 @@ export default function InfoModalCyberBugs(props) {
                                 <div className="col-4">
                                     <div className="status">
                                         <h6>STATUS</h6>
-                                        <select className="custom-select">
+                                        <select className="custom-select" value={taskDetailModal.statusId} onChange={(e)=>{}}>
                                             {statusList.map((status, index) => {
-                                                const selectedStatus = taskDetailModal.statusId == status.statusId;
-
-                                                if (selectedStatus) {
-                                                    return <option key={index} value={status.statusId} selected>{status.statusName}</option>
-                                                } else {
-                                                    return <option key={index} value={status.statusId}>{status.statusName}</option>
-                                                }
+                                                return <option key={index} value={status.statusId}>{status.statusName}</option>
                                             })}
                                         </select>
                                     </div>
@@ -149,45 +146,21 @@ export default function InfoModalCyberBugs(props) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="reporter">
-                                        <h6>REPORTER</h6>
-                                        <div style={{ display: 'flex' }} className="item">
-                                            <div className="avatar">
-                                                <img src={require('../../../assets/img/download (1).jfif')} alt='1' />
-                                            </div>
-                                            <p className="name">
-                                                Pickle Rick
-                                                <i className="fa fa-times" style={{ marginLeft: 5 }} />
-                                            </p>
-                                        </div>
-                                    </div>
                                     <div className="priority" style={{ marginBottom: 20 }}>
                                         <h6>PRIORITY</h6>
-                                        <select>
-                                            <option>Highest</option>
-                                            <option>Medium</option>
-                                            <option>Low</option>
-                                            <option>Lowest</option>
+                                        <select value={taskDetailModal.priorityTask?.priorityId} onChange={(e)=>{}}>
+                                            {arrPriority.map((priority, index) => {
+                                                return <option key={index} value={priority.priorityId}>{priority.priority}</option>
+                                            })}
                                         </select>
                                     </div>
                                     <div className="estimate">
                                         <h6>ORIGINAL ESTIMATE (HOURS)</h6>
-                                        <input type="text" className="estimate-hours" />
+                                        <input type="text" className="estimate-hours" defaultValue={taskDetailModal.originalEstimate}/>
                                     </div>
                                     <div className="time-tracking">
                                         <h6>TIME TRACKING</h6>
-                                        <div style={{ display: 'flex' }}>
-                                            <i className="fa fa-clock" />
-                                            <div style={{ width: '100%' }}>
-                                                <div className="progress">
-                                                    <div className="progress-bar" role="progressbar" style={{ width: '25%' }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100} />
-                                                </div>
-                                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                    <p className="logged">4h logged</p>
-                                                    <p className="estimate-time">12h estimated</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {renderTimeTracking()}
                                     </div>
                                     <div style={{ color: '#929398' }}>Create at a month ago</div>
                                     <div style={{ color: '#929398' }}>Update at a few seconds ago</div>

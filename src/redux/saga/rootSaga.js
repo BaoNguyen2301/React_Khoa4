@@ -36,6 +36,7 @@ export function * rootSaga (){
         PrioritySaga.followGetAllPrioritySaga(),
 
         TaskSaga.followCreateTaskSaga(),
+        TaskSaga.followGetTaskDetailSaga(),
 
         StatusSaga.followGetAllStatusSaga()
 
