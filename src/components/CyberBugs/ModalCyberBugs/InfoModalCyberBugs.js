@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllStatusSaga } from '../../../redux/actions/CyberBugs/StatusAction'
 import { getAllPrioritySaga } from '../../../redux/actions/CyberBugs/PriorityAction'
+import { UPDATE_TASK_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/TaskContant'
 
 export default function InfoModalCyberBugs(props) {
 
@@ -123,7 +124,17 @@ export default function InfoModalCyberBugs(props) {
                                 <div className="col-4">
                                     <div className="status">
                                         <h6>STATUS</h6>
-                                        <select className="custom-select" value={taskDetailModal.statusId} onChange={(e)=>{}}>
+                                        <select className="custom-select" value={taskDetailModal.statusId} onChange={(e)=>{
+                                            const action = {
+                                                type: UPDATE_TASK_STATUS_SAGA,
+                                                taskStatusUpdate: {
+                                                    taskId: taskDetailModal.taskId,
+                                                    statusId: e.target.value,
+                                                    projectId: taskDetailModal.projectId
+                                                }
+                                            }
+                                            dispatch(action)
+                                        }}>
                                             {statusList.map((status, index) => {
                                                 return <option key={index} value={status.statusId}>{status.statusName}</option>
                                             })}
