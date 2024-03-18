@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllStatusSaga } from '../../../redux/actions/CyberBugs/StatusAction'
 import { getAllPrioritySaga } from '../../../redux/actions/CyberBugs/PriorityAction'
-import { UPDATE_TASK_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/TaskContant'
+import { CHANGE_TASK_MODEL, UPDATE_TASK_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/TaskContant'
+import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/Cyberbugs/TaskTypeContant'
 
 export default function InfoModalCyberBugs(props) {
 
@@ -12,36 +13,57 @@ export default function InfoModalCyberBugs(props) {
 
     const { arrPriority } = useSelector(state => state.PriorityReducer)
 
+    const { arrTaskType } = useSelector(state => state.TaskTypeReducer)
+
     const dispatch = useDispatch()
 
-    const renderTimeTracking = () =>{
+    const renderTimeTracking = () => {
 
-        const {timeTrackingSpent, timeTrackingRemaining} = taskDetailModal
+        const { timeTrackingSpent, timeTrackingRemaining } = taskDetailModal
 
         const max = Number(timeTrackingSpent) + Number(timeTrackingRemaining)
-        
-        const percent = Math.round(Number(timeTrackingSpent)/max *100)
 
-        return <div style={{ display: 'flex' }}>
-        <i className="fa fa-clock" />
-        <div style={{ width: '100%' }}>
-            <div className="progress">
-                <div className="progress-bar" role="progressbar" style={{ width: `${percent}%`}} aria-valuenow={Number(timeTrackingSpent)} aria-valuemin={Number(timeTrackingRemaining)} aria-valuemax={max} />
+        const percent = Math.round(Number(timeTrackingSpent) / max * 100)
+
+        return <div>
+            <div style={{ display: 'flex' }}>
+                <i className="fa fa-clock" />
+                <div style={{ width: '100%' }}>
+                    <div className="progress">
+                        <div className="progress-bar" role="progressbar" style={{ width: `${percent}%` }} aria-valuenow={Number(timeTrackingSpent)} aria-valuemin={Number(timeTrackingRemaining)} aria-valuemax={max} />
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <p className="logged">{timeTrackingSpent} logged</p>
+                        <p className="estimate-time">{timeTrackingRemaining} estimated</p>
+                    </div>
+                </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <p className="logged">{timeTrackingSpent} logged</p>
-                <p className="estimate-time">{timeTrackingRemaining} estimated</p>
-            </div>
+            <div className='row'>
+                    <div className="col-6">
+                        <input className='form-control' name='timeTrackingSpent' onChange={(e) => { handleChange(e) }} />
+                    </div>
+                    <div className="col-6">
+                        <input className='form-control' name='timeTrackingRemaining' onChange={(e) => { handleChange(e) }} />
+                    </div>
+                </div>
         </div>
-    </div>
     }
 
     useEffect(() => {
         dispatch(getAllStatusSaga())
         dispatch(getAllPrioritySaga())
-
+        dispatch({type: GET_ALL_TASK_TYPE_SAGA})
         return () => { }
     }, [])
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        dispatch({
+            type: CHANGE_TASK_MODEL,
+            name,
+            value
+        })
+    }
 
 
     return (
@@ -51,6 +73,11 @@ export default function InfoModalCyberBugs(props) {
                     <div className="modal-header">
                         <div className="task-title">
                             <i className="fa fa-bookmark" />
+                            <select name='typeId' className="custom-select" value={taskDetailModal.typeId} onChange={handleChange}>
+                                {arrTaskType.map((type, index)=>{
+                                    return <option key={index} value={type.id}>{type.taskType}</option>
+                                })}
+                            </select>
                             <span>{taskDetailModal.taskName}</span>
                         </div>
                         <div style={{ display: 'flex' }} className="task-click">
@@ -124,16 +151,19 @@ export default function InfoModalCyberBugs(props) {
                                 <div className="col-4">
                                     <div className="status">
                                         <h6>STATUS</h6>
-                                        <select className="custom-select" value={taskDetailModal.statusId} onChange={(e)=>{
-                                            const action = {
-                                                type: UPDATE_TASK_STATUS_SAGA,
-                                                taskStatusUpdate: {
-                                                    taskId: taskDetailModal.taskId,
-                                                    statusId: e.target.value,
-                                                    projectId: taskDetailModal.projectId
-                                                }
-                                            }
-                                            dispatch(action)
+                                        <select name='statusId' className="custom-select" value={taskDetailModal.statusId} onChange={(e) => {
+
+                                            handleChange(e)
+
+                                            // const action = {
+                                            //     type: UPDATE_TASK_STATUS_SAGA,
+                                            //     taskStatusUpdate: {
+                                            //         taskId: taskDetailModal.taskId,
+                                            //         statusId: e.target.value,
+                                            //         projectId: taskDetailModal.projectId
+                                            //     }
+                                            // }
+                                            // dispatch(action)
                                         }}>
                                             {statusList.map((status, index) => {
                                                 return <option key={index} value={status.statusId}>{status.statusName}</option>
@@ -159,7 +189,7 @@ export default function InfoModalCyberBugs(props) {
                                     </div>
                                     <div className="priority" style={{ marginBottom: 20 }}>
                                         <h6>PRIORITY</h6>
-                                        <select value={taskDetailModal.priorityTask?.priorityId} onChange={(e)=>{}}>
+                                        <select name='priorityId' value={taskDetailModal.priorityId} onChange={(e) => { handleChange(e) }}>
                                             {arrPriority.map((priority, index) => {
                                                 return <option key={index} value={priority.priorityId}>{priority.priority}</option>
                                             })}
@@ -167,7 +197,7 @@ export default function InfoModalCyberBugs(props) {
                                     </div>
                                     <div className="estimate">
                                         <h6>ORIGINAL ESTIMATE (HOURS)</h6>
-                                        <input type="text" className="estimate-hours" defaultValue={taskDetailModal.originalEstimate}/>
+                                        <input name='originalEstimate' type="text" className="estimate-hours" defaultValue={taskDetailModal.originalEstimate} onChange={(e) => { handleChange(e) }} />
                                     </div>
                                     <div className="time-tracking">
                                         <h6>TIME TRACKING</h6>

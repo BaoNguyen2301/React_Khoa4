@@ -66,7 +66,6 @@ export function* followGetTaskDetailSaga() {
 //----------------Update Task ----------------
 
 function* updateTaskStatusSaga(action) {
-    console.log(action)
     try {
         const { data, status } = yield call(() => taskService.updateStatusTask(action.taskStatusUpdate))
         if (status === STATUS_CODE.SUCCESS) {
