@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllStatusSaga } from '../../../redux/actions/CyberBugs/StatusAction'
 import { getAllPrioritySaga } from '../../../redux/actions/CyberBugs/PriorityAction'
 import { CHANGE_TASK_MODEL, UPDATE_TASK_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/TaskContant'
 import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/Cyberbugs/TaskTypeContant'
+import { Editor } from '@tinymce/tinymce-react'
 
 export default function InfoModalCyberBugs(props) {
 
@@ -14,6 +15,12 @@ export default function InfoModalCyberBugs(props) {
     const { arrPriority } = useSelector(state => state.PriorityReducer)
 
     const { arrTaskType } = useSelector(state => state.TaskTypeReducer)
+
+    const [visibleEditor, setVisibleEditor] = useState(false)
+
+    const [historyContent, setHistoryContent] = useState(taskDetailModal.description)
+
+    const [content, setContent] = useState(taskDetailModal.description)
 
     const dispatch = useDispatch()
 
@@ -39,20 +46,20 @@ export default function InfoModalCyberBugs(props) {
                 </div>
             </div>
             <div className='row'>
-                    <div className="col-6">
-                        <input className='form-control' name='timeTrackingSpent' onChange={(e) => { handleChange(e) }} />
-                    </div>
-                    <div className="col-6">
-                        <input className='form-control' name='timeTrackingRemaining' onChange={(e) => { handleChange(e) }} />
-                    </div>
+                <div className="col-6">
+                    <input className='form-control' name='timeTrackingSpent' onChange={(e) => { handleChange(e) }} />
                 </div>
+                <div className="col-6">
+                    <input className='form-control' name='timeTrackingRemaining' onChange={(e) => { handleChange(e) }} />
+                </div>
+            </div>
         </div>
     }
 
     useEffect(() => {
         dispatch(getAllStatusSaga())
         dispatch(getAllPrioritySaga())
-        dispatch({type: GET_ALL_TASK_TYPE_SAGA})
+        dispatch({ type: GET_ALL_TASK_TYPE_SAGA })
         return () => { }
     }, [])
 
@@ -73,11 +80,7 @@ export default function InfoModalCyberBugs(props) {
                     <div className="modal-header">
                         <div className="task-title">
                             <i className="fa fa-bookmark" />
-                            <select name='typeId' className="custom-select" value={taskDetailModal.typeId} onChange={handleChange}>
-                                {arrTaskType.map((type, index)=>{
-                                    return <option key={index} value={type.id}>{type.taskType}</option>
-                                })}
-                            </select>
+
                             <span>{taskDetailModal.taskName}</span>
                         </div>
                         <div style={{ display: 'flex' }} className="task-click">
@@ -99,11 +102,60 @@ export default function InfoModalCyberBugs(props) {
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-8">
-                                    <p className="issue">This is an issue of type: {taskDetailModal.taskTypeDetail?.taskType}.</p>
+                                    <div className='row'>
+                                        <div className='col-5'>
+                                            <p className="issue">This is an issue of type: </p>
+                                        </div>
+                                        <div className='col-3 text-left'>
+                                            <select name='typeId' className="custom-select" value={taskDetailModal.typeId} onChange={handleChange}>
+                                                {arrTaskType.map((type, index) => {
+                                                    return <option key={index} value={type.id}>{type.taskType}</option>
+                                                })}
+                                            </select>
+                                        </div>
+                                    </div>
+
+
                                     <div className="description">
                                         <p>Description</p>
-                                        <p dangerouslySetInnerHTML={{ __html: taskDetailModal.description }}>
-                                        </p>
+                                        <div>
+                                            {visibleEditor ? <div>
+                                                <Editor
+                                                    apiKey='sjskzwmsvvf48f63km1l2k34tvyvyj5i317qpwj5k53o0uip'
+                                                    initialValue={taskDetailModal.description}
+                                                    name='description'
+                                                    init={{
+                                                        plugins: 'link image code',
+                                                        toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                                                    }}
+                                                    onEditorChange={(content, editor) => {
+                                                        setContent(content)
+                                                    }}
+                                                />
+                                                <button className='btn btn-primary' onClick={() => {
+                                                    dispatch({
+                                                        type: CHANGE_TASK_MODEL,
+                                                        name: 'description',
+                                                        value: content
+                                                    })
+                                                    setVisibleEditor(false)
+                                                }}>Save</button>
+                                                <button className='btn btn-danger' onClick={() => {
+                                                    dispatch({
+                                                        type: CHANGE_TASK_MODEL,
+                                                        name: 'description',
+                                                        value: historyContent
+                                                    })
+                                                    setVisibleEditor(false)
+                                                }}>Cancel</button>
+                                            </div> : <div onClick={() => {
+                                                setHistoryContent(content)
+                                                setVisibleEditor(!visibleEditor)
+                                            }}>
+                                                <p dangerouslySetInnerHTML={{ __html: taskDetailModal.description }}></p>
+                                            </div>}
+                                        </div>
+
                                     </div>
                                     <div className="comment">
                                         <h6>Comment</h6>
