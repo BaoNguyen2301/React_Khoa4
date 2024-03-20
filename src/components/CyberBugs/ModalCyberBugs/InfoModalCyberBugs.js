@@ -265,7 +265,7 @@ export default function InfoModalCyberBugs(props) {
                                                     optionFilterProp='label'
                                                     name='lstUser'
                                                     value='+ Add more'
-                                                    className='form-control'
+
                                                     onSelect={(value) => {
                                                         if (value == '0') {
                                                             return
