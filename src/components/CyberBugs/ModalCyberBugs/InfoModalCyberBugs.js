@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllStatusSaga } from '../../../redux/actions/CyberBugs/StatusAction'
 import { getAllPrioritySaga } from '../../../redux/actions/CyberBugs/PriorityAction'
-import { CHANGE_TASK_MODEL, UPDATE_TASK_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/TaskContant'
+import { CHANGE_ASSIGNESS, CHANGE_TASK_MODEL, REMOVE_USER_ASSIGNESS, UPDATE_TASK_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/TaskContant'
 import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/Cyberbugs/TaskTypeContant'
 import { Editor } from '@tinymce/tinymce-react'
+import { Select } from 'antd';
 
 export default function InfoModalCyberBugs(props) {
 
@@ -15,6 +16,8 @@ export default function InfoModalCyberBugs(props) {
     const { arrPriority } = useSelector(state => state.PriorityReducer)
 
     const { arrTaskType } = useSelector(state => state.TaskTypeReducer)
+
+    const { projectDetail } = useSelector(state => state.ProjectReducer)
 
     const [visibleEditor, setVisibleEditor] = useState(false)
 
@@ -60,6 +63,10 @@ export default function InfoModalCyberBugs(props) {
         dispatch(getAllStatusSaga())
         dispatch(getAllPrioritySaga())
         dispatch({ type: GET_ALL_TASK_TYPE_SAGA })
+        dispatch({
+            type: 'GET_PROJECT_DETAIL_SAGA',
+            projectId: taskDetailModal.projectId
+        })
         return () => { }
     }, [])
 
@@ -224,18 +231,53 @@ export default function InfoModalCyberBugs(props) {
                                     </div>
                                     <div className="assignees">
                                         <h6>ASSIGNEES</h6>
-                                        <div style={{ display: 'flex' }}>
+                                        <div className='row'>
                                             {taskDetailModal.assigness?.map((assign, index) => {
-                                                return <div key={index} style={{ display: 'flex' }} className="item">
-                                                    <p className="name">
-                                                        {assign.name}
-                                                        <i className="fa fa-times" style={{ marginLeft: 5 }} />
-                                                    </p>
+                                                return <div className='col-6 mt-2 mb-2' key={index}>
+                                                    <div style={{ display: 'flex' }} className="item" value={assign.id}>
+                                                        <p className="name">
+                                                            {assign.name}
+                                                            <i className="fa fa-times" style={{ marginLeft: 5, cursor: 'pointer' }} onClick={()=>{
+                                                                dispatch({
+                                                                    type: REMOVE_USER_ASSIGNESS,
+                                                                    userId: assign.id
+                                                                })
+                                                            }}/>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             })}
 
-                                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa fa-plus" style={{ marginRight: 5 }} /><span>Add more</span>
+                                            <div className='col-6 mt-2 mb-2'>
+                                                <Select
+                                                    options={projectDetail.members?.filter(mem => {
+                                                        let index = taskDetailModal.assigness?.findIndex(us => us.id === mem.userId)
+                                                        if (index !== -1) {
+                                                            return false
+                                                        }
+                                                        return true
+                                                    })?.map((mem, index) => {
+                                                        return { value: mem.userId, label: mem.name }
+                                                    })}
+                                                    style={{
+                                                        width: '100%',
+                                                    }}
+                                                    optionFilterProp='label'
+                                                    name='lstUser'
+                                                    value='+ Add more'
+                                                    className='form-control'
+                                                    onSelect={(value) => {
+                                                        if (value == '0') {
+                                                            return
+                                                        }
+                                                        let userSelected = projectDetail.members.find(mem => mem.userId == value)
+                                                        userSelected = { ...userSelected, id: userSelected.userId }
+                                                        dispatch({
+                                                            type: CHANGE_ASSIGNESS,
+                                                            userSelected
+                                                        })
+                                                    }}>
+                                                </Select>
                                             </div>
                                         </div>
                                     </div>
