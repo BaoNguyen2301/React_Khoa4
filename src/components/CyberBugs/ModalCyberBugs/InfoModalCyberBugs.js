@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllStatusSaga } from '../../../redux/actions/CyberBugs/StatusAction'
 import { getAllPrioritySaga } from '../../../redux/actions/CyberBugs/PriorityAction'
-import { CHANGE_ASSIGNESS, CHANGE_TASK_MODEL, REMOVE_USER_ASSIGNESS, UPDATE_TASK_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/TaskContant'
+import { CHANGE_ASSIGNESS, CHANGE_TASK_MODEL, HANDLE_CHANGE_POST_API_SAGA, REMOVE_USER_ASSIGNESS, UPDATE_TASK_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/TaskContant'
 import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/Cyberbugs/TaskTypeContant'
 import { Editor } from '@tinymce/tinymce-react'
 import { Select } from 'antd';
@@ -72,11 +72,19 @@ export default function InfoModalCyberBugs(props) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
         dispatch({
-            type: CHANGE_TASK_MODEL,
+            type: HANDLE_CHANGE_POST_API_SAGA,
+            actionType: CHANGE_TASK_MODEL,
             name,
             value
         })
+
+        // dispatch({
+        //     type: CHANGE_TASK_MODEL,
+        //     name,
+        //     value
+        // })
     }
 
 
@@ -141,18 +149,30 @@ export default function InfoModalCyberBugs(props) {
                                                 />
                                                 <button className='btn btn-primary' onClick={() => {
                                                     dispatch({
-                                                        type: CHANGE_TASK_MODEL,
+                                                        type:HANDLE_CHANGE_POST_API_SAGA,
+                                                        actionType: CHANGE_TASK_MODEL,
                                                         name: 'description',
                                                         value: content
                                                     })
+                                                    // dispatch({
+                                                    //     type: CHANGE_TASK_MODEL,
+                                                    //     name: 'description',
+                                                    //     value: content
+                                                    // })
                                                     setVisibleEditor(false)
                                                 }}>Save</button>
                                                 <button className='btn btn-danger' onClick={() => {
                                                     dispatch({
-                                                        type: CHANGE_TASK_MODEL,
+                                                        type:HANDLE_CHANGE_POST_API_SAGA,
+                                                        actionType: CHANGE_TASK_MODEL,
                                                         name: 'description',
                                                         value: historyContent
                                                     })
+                                                    // dispatch({
+                                                    //     type: CHANGE_TASK_MODEL,
+                                                    //     name: 'description',
+                                                    //     value: historyContent
+                                                    // })
                                                     setVisibleEditor(false)
                                                 }}>Cancel</button>
                                             </div> : <div onClick={() => {
@@ -239,9 +259,15 @@ export default function InfoModalCyberBugs(props) {
                                                             {assign.name}
                                                             <i className="fa fa-times" style={{ marginLeft: 5, cursor: 'pointer' }} onClick={()=>{
                                                                 dispatch({
-                                                                    type: REMOVE_USER_ASSIGNESS,
+                                                                    type: HANDLE_CHANGE_POST_API_SAGA,
+                                                                    actionType: REMOVE_USER_ASSIGNESS,
                                                                     userId: assign.id
                                                                 })
+
+                                                                // dispatch({
+                                                                //     type: REMOVE_USER_ASSIGNESS,
+                                                                //     userId: assign.id
+                                                                // })
                                                             }}/>
                                                         </p>
                                                     </div>
@@ -272,10 +298,17 @@ export default function InfoModalCyberBugs(props) {
                                                         }
                                                         let userSelected = projectDetail.members.find(mem => mem.userId == value)
                                                         userSelected = { ...userSelected, id: userSelected.userId }
+
                                                         dispatch({
-                                                            type: CHANGE_ASSIGNESS,
+                                                            type: HANDLE_CHANGE_POST_API_SAGA,
+                                                            actionType: CHANGE_ASSIGNESS,
                                                             userSelected
                                                         })
+
+                                                        // dispatch({
+                                                        //     type: CHANGE_ASSIGNESS,
+                                                        //     userSelected
+                                                        // })
                                                     }}>
                                                 </Select>
                                             </div>

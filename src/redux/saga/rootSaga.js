@@ -38,6 +38,7 @@ export function * rootSaga (){
         TaskSaga.followCreateTaskSaga(),
         TaskSaga.followGetTaskDetailSaga(),
         TaskSaga.followUpdateTaskStatusSaga(),
+        TaskSaga.followHandleChangePostApi(),
 
         StatusSaga.followGetAllStatusSaga()
 
