@@ -27,6 +27,7 @@ import CreateProject from './pages/CyberBugs/CreateProject/CreateProject';
 import ProjectManagement from './pages/CyberBugs/ProjectManagement/ProjectManagement';
 import ModalCyberBugs from './HOC/CyberBugsHOC/ModalCyberBugs'
 import IndexCyberBugs from './redux/saga/Cyberbugs/indexCyberBugs';
+import DemoDragDrop from './pages/DemoDragDrop/DemoDragDrop';
 
 function App() {
 
@@ -53,6 +54,7 @@ function App() {
         <HomeTemmlate exact path='/home' Component={Home} />
         <HomeTemmlate exact path='/contact' Component={Contact} />
         <HomeTemmlate exact path='/about' Component={About} />
+        <HomeTemmlate exact path='/dragdrop' Component={DemoDragDrop} />
         <CyberBugsTemplate exact path='/' Component={ProjectManagement} />
         <UserLoginTemplate exact path='/login' Component={LoginCyberBugs} />
         <HomeTemmlate exact path='/detail/:id' Component={Detail} />
